@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PermissionMapper">
+
+    <select id="selectPermissions" resultType="uz.furor.template.db.beans.admin.PermissionBean" parameterType="map">
+        select a.* from permissions a
+        where 1=1
+        <if test="id != null">
+            AND a.id = #{id}
+        </if>
+        <if test="name != null">
+            AND a.name like '%${name}%'
+        </if>
+        <if test="shortname != null">
+            and a.shortname = #{shortname}
+        </if>
+
+    </select>
+
+</mapper>

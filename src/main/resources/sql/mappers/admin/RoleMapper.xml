@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoleMapper">
+
+    <select id="selectRoles" resultType="uz.furor.template.db.beans.admin.RoleBean" parameterType="map">
+        select a.* from roles a
+        where 1=1
+        <if test="id != null">
+            AND a.id = #{id}
+        </if>
+        <if test="is_default != null">
+            and a.is_default = #{is_default}
+        </if>
+        <if test="users_id != null">
+            and a.id in (select roles_id from user_roles where users_id = #{users_id})
+        </if>
+        <if test="name != null">
+            AND a.name like '%${name}%'
+        </if>
+
+    </select>
+
+</mapper>
