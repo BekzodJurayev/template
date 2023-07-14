@@ -2,17 +2,45 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="UserMapper">
+<mapper namespace="uz.furor.template.mapper.admin.UserMapper">
 
     <select id="selectUsers" resultType="uz.furor.template.db.beans.admin.UserBean" parameterType="map">
         select * from users a
-        where 1 = 1
+        where extract(year from current_timestamp) > 2022
         <if test="id != null">
-            AND a.id = #{id}
+            AND a.id = #{id}::int4
         </if>
         <if test="username != null">
             AND a.username = #{username}
         </if>
     </select>
 
+
+    <parameterMap id="insertUserMap" type="map">
+        <parameter property="p_username" javaType="VARCHAR" mode="IN"/>
+        <parameter property="p_password" javaType="VARCHAR" mode="IN"/>
+        <parameter property="p_password_expire_date" javaType="DATE" mode="IN"/>
+        <parameter property="p_enabled" javaType="BOOLEAN" mode="IN"/>
+        <parameter property="p_result" javaType="INTEGER" mode="OUT"/>
+        <parameter property="p_new_id" javaType="INTEGER" mode="OUT"/>
+        <parameter property="p_res_msg" javaType="VARCHAR" mode="OUT"/>
+        <parameter property="p_log_msg" javaType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    <insert id="insertUser" parameterMap="insertUserMap" statementType="CALLABLE">
+        {call insertUser(?, ?, ?, ?, ?, ?, ?, ?)}
+    </insert>
+
+    <parameterMap id="updateUserMap" type="map">
+        <parameter property="pid" javaType="INTEGER" mode="OUT"/>
+        <parameter property="p_username" javaType="VARCHAR" mode="IN"/>
+        <parameter property="p_password" javaType="VARCHAR" mode="IN"/>
+        <parameter property="p_password_expire_date" javaType="DATE" mode="IN"/>
+        <parameter property="p_enabled" javaType="BOOLEAN" mode="IN"/>
+        <parameter property="p_result" javaType="INTEGER" mode="OUT"/>
+        <parameter property="p_res_msg" javaType="VARCHAR" mode="OUT"/>
+        <parameter property="p_log_msg" javaType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    <update id="updateUser" parameterMap="updateUserMap" statementType="CALLABLE">
+        {call updateUser(?, ?, ?, ?, ?, ?, ?, ?)}
+    </update>
 </mapper>

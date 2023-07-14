@@ -6,9 +6,9 @@
 
     <select id="selectPermissions" resultType="uz.furor.template.db.beans.admin.PermissionBean" parameterType="map">
         select a.* from permissions a
-        where 1=1
+        where extract(year from current_timestamp) > 2022
         <if test="id != null">
-            AND a.id = #{id}
+            AND a.id = #{id}::int4
         </if>
         <if test="name != null">
             AND a.name like '%${name}%'
@@ -16,7 +16,76 @@
         <if test="shortname != null">
             and a.shortname = #{shortname}
         </if>
+    </select>
 
+
+<!--    <insert id="insertPermission" parameterType="uz.furor.template.db.beans.admin.PermissionBean"-->
+<!--            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">-->
+<!--        insert into permissions (id,-->
+<!--                                 shortname,-->
+<!--                                 name,-->
+<!--                                 enabled,-->
+<!--                                 order_id,-->
+<!--                                 description,-->
+<!--                                 created_users_id,-->
+<!--                                 created_date,-->
+<!--                                 updated_users_id,-->
+<!--                                 updated_date)-->
+<!--        VALUES (nextval('permissions_seq'),-->
+<!--                #{shortname},-->
+<!--                #{name},-->
+<!--                #{enabled}::bool,-->
+<!--                #{order_id}::int4,-->
+<!--                #{description},-->
+<!--                #{created_users_id}::int4,-->
+<!--                current_timestamp,-->
+<!--                #{updated_users_id}::int4,-->
+<!--                current_timestamp)-->
+<!--    </insert>-->
+
+    <update id="updatePermission" parameterType="uz.furor.template.db.beans.admin.PermissionBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        update permissions
+        set shortname        = #{shortname},
+            name             = #{name},
+            enabled          = #{enabled}::bool,
+            order_id         = #{order_id}::int4,
+            description      = #{description},
+            updated_users_id = #{updated_users_id}::int4,
+            updated_date     = current_timestamp
+        where id = #{id}::int4
+    </update>
+
+    <delete id="deletePermission" parameterType="map" statementType="PREPARED">
+        delete
+        from permissions
+        where id = #{id}::int4
+    </delete>
+
+    <select id="insertPermission" parameterType="uz.furor.template.db.beans.admin.PermissionBean"
+            resultType="uz.furor.template.db.beans.admin.PermissionBean"
+            affectData="true" flushCache="true">
+        insert into permissions (id,
+                                 shortname,
+                                 name,
+                                 enabled,
+                                 order_id,
+                                 description,
+                                 created_users_id,
+                                 created_date,
+                                 updated_users_id,
+                                 updated_date)
+        VALUES (nextval('permissions_seq'),
+                #{shortname},
+                #{name},
+                #{enabled}::bool,
+                #{order_id}::int4,
+                #{description},
+                #{created_users_id}::int4,
+                current_timestamp,
+                #{updated_users_id}::int4,
+                current_timestamp)
+        returning id, shortname, name,enabled,order_id, description, created_users_id, created_date, updated_users_id, updated_date
     </select>
 
 </mapper>

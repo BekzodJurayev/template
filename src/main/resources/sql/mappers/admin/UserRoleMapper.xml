@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="uz.furor.template.mapper.admin.UserRoleMapper">
+
+    <select id="selectUserRoles" resultType="uz.furor.template.db.beans.admin.UserRoleBean" parameterType="map">
+        select a.* from user_roles a
+        where extract(year from current_timestamp) > 2022
+        <if test="id != null">
+            AND a.id = #{id}::int4
+        </if>
+        <if test="roles_id != null">
+            and a.roles_id = #{roles_id}::int4
+        </if>
+        <if test="users_id != null">
+            and a.users_id = #{users_id}::int4
+        </if>
+
+    </select>
+
+    <insert id="insertUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into user_roles (id,
+                                users_id,
+                                roles_id,
+                                created_users_id)
+        VALUES (nextval('user_roles_seq'),
+                #{users_id}::int4,
+                #{roles_id}::int4,
+                #{created_users_id}::int4)
+    </insert>
+
+    <update id="updateUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        update user_roles
+        set users_id = #{users_id}::int4,
+            roles_id = #{roles_id}::int4
+        where id = #{id}::int4
+    </update>
+
+    <delete id="deleteUserRole" parameterType="map" statementType="PREPARED">
+        delete from user_roles
+        where id = #{id}::int4
+    </delete>
+    <!--    <select id="insertUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"-->
+    <!--            resultType="uz.furor.template.db.beans.admin.UserRoleBean"-->
+    <!--            affectData="true" flushCache="true">-->
+    <!--        insert into user_roles (id,-->
+    <!--                           name,-->
+    <!--                           enabled,-->
+    <!--                           order_id,-->
+    <!--                           description,-->
+    <!--                           created_users_id,-->
+    <!--                           created_date,-->
+    <!--                           updated_users_id,-->
+    <!--                           updated_date,-->
+    <!--                           is_default)-->
+    <!--        VALUES (nextval('user_roles_seq'),-->
+    <!--                #{name},-->
+    <!--                #{enabled}::bool,-->
+    <!--                #{order_id}::int4,-->
+    <!--                #{description},-->
+    <!--                #{created_users_id}::int4,-->
+    <!--                current_timestamp,-->
+    <!--                #{updated_users_id}::int4,-->
+    <!--                current_timestamp,-->
+    <!--                #{is_default}::bool)-->
+    <!--        returning id, name,enabled,order_id, description, created_users_id, created_date, updated_users_id, updated_date, is_default-->
+    <!--    </select>-->
+
+</mapper>

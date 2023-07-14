@@ -2,24 +2,91 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="RoleMapper">
+<mapper namespace="uz.furor.template.mapper.admin.RoleMapper">
 
     <select id="selectRoles" resultType="uz.furor.template.db.beans.admin.RoleBean" parameterType="map">
         select a.* from roles a
-        where 1=1
+        where extract(year from current_timestamp) > 2022
         <if test="id != null">
-            AND a.id = #{id}
+            AND a.id = #{id}::int4
         </if>
         <if test="is_default != null">
-            and a.is_default = #{is_default}
+            and a.is_default = #{is_default}::bool
         </if>
         <if test="users_id != null">
-            and a.id in (select roles_id from user_roles where users_id = #{users_id})
+            and a.id in (select roles_id from user_roles where users_id = #{users_id}::int4)
         </if>
         <if test="name != null">
             AND a.name like '%${name}%'
         </if>
 
     </select>
+
+    <insert id="insertRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into roles (id,
+                           name,
+                           enabled,
+                           order_id,
+                           description,
+                           created_users_id,
+                           created_date,
+                           updated_users_id,
+                           updated_date,
+                           is_default)
+        VALUES (nextval('roles_seq'),
+                #{name},
+                #{enabled}::bool,
+                #{order_id}::int4,
+                #{description},
+                #{created_users_id}::int4,
+                current_timestamp,
+                #{updated_users_id}::int4,
+                current_timestamp,
+                #{is_default}::bool)
+    </insert>
+
+    <update id="updateRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        update roles set
+                           name = #{name},
+                           enabled = #{enabled}::bool,
+                           order_id = #{order_id}::int4,
+                           description = #{description},
+                           updated_users_id = #{updated_users_id}::int4,
+                           updated_date = current_timestamp,
+                           is_default = #{is_default}::bool
+        where id = #{id}::int4
+    </update>
+
+    <delete id="deleteRole" parameterType="map" statementType="PREPARED">
+        delete from roles
+        where id = #{id}::int4
+    </delete>
+<!--    <select id="insertRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"-->
+<!--            resultType="uz.furor.template.db.beans.admin.RoleBean"-->
+<!--            affectData="true" flushCache="true">-->
+<!--        insert into roles (id,-->
+<!--                           name,-->
+<!--                           enabled,-->
+<!--                           order_id,-->
+<!--                           description,-->
+<!--                           created_users_id,-->
+<!--                           created_date,-->
+<!--                           updated_users_id,-->
+<!--                           updated_date,-->
+<!--                           is_default)-->
+<!--        VALUES (nextval('roles_seq'),-->
+<!--                #{name},-->
+<!--                #{enabled}::bool,-->
+<!--                #{order_id}::int4,-->
+<!--                #{description},-->
+<!--                #{created_users_id}::int4,-->
+<!--                current_timestamp,-->
+<!--                #{updated_users_id}::int4,-->
+<!--                current_timestamp,-->
+<!--                #{is_default}::bool)-->
+<!--        returning id, name,enabled,order_id, description, created_users_id, created_date, updated_users_id, updated_date, is_default-->
+<!--    </select>-->
 
 </mapper>

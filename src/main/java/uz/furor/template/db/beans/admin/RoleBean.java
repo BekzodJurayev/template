@@ -11,9 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoleBean extends BaseNameBean {
-    private String shortname;
-    private boolean is_default;
-    private boolean enabled;
+    private boolean is_default = false;
+    private boolean enabled = false;
     private Set<PermissionBean> permissions;
     private Set<RoleBean> accessedRoles;
 }

@@ -2,24 +2,20 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="RoleAccessMapper">
+<mapper namespace="uz.furor.template.mapper.admin.RoleAccessMapper">
 
-    <select id="selectRoleAccesss" resultType="uz.furor.template.db.beans.admin.RoleAccessBean" parameterType="map">
-        select a.* from role a
-        where 1=1
+    <select id="selectRoleAccesses" resultType="uz.furor.template.db.beans.admin.RoleAccessBean" parameterType="map">
+        select a.* from role_accesses a
+        where extract(year from current_timestamp) > 2022
         <if test="id != null">
-            AND a.id = #{id}
+            AND a.id = #{id}::int4
         </if>
-        <if test="is_default != null">
-            and a.is_default = #{is_default}
+        <if test="roles_id != null">
+            and a.roles_id = #{roles_id}::int4
         </if>
-        <if test="users_id != null">
-            and a.id in (select roles_id from user_roles where users_id = #{users_id})
+        <if test="accessed_roles_id != null">
+            AND a.accessed_roles_id = #{accessed_roles_id}::int4
         </if>
-        <if test="name != null">
-            AND a.name like '%${name}%'
-        </if>
-
     </select>
 
 </mapper>
