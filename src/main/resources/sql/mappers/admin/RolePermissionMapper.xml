@@ -43,18 +43,18 @@
     <!--                current_timestamp)-->
     <!--    </insert>-->
 
-    <update id="updateRolePermission" parameterType="uz.furor.template.db.beans.admin.RolePermissionBean"
-            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        update role_permissions
-        set shortname        = #{shortname},
-            name             = #{name},
-            enabled          = #{enabled}::bool,
-            order_id         = #{order_id}::int4,
-            description      = #{description},
-            updated_users_id = #{updated_users_id}::int4,
-            updated_date     = current_timestamp
-        where id = #{id}::int4
-    </update>
+<!--    <update id="updateRolePermission" parameterType="uz.furor.template.db.beans.admin.RolePermissionBean"-->
+<!--            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">-->
+<!--        update role_permissions-->
+<!--        set shortname        = #{shortname},-->
+<!--            name             = #{name},-->
+<!--            enabled          = #{enabled}::bool,-->
+<!--            order_id         = #{order_id}::int4,-->
+<!--            description      = #{description},-->
+<!--            updated_users_id = #{updated_users_id}::int4,-->
+<!--            updated_date     = current_timestamp-->
+<!--        where id = #{id}::int4-->
+<!--    </update>-->
 
     <delete id="deleteRolePermission" parameterType="map" statementType="PREPARED">
         delete
@@ -62,30 +62,30 @@
         where id = #{id}::int4
     </delete>
 
-    <select id="insertRolePermission" parameterType="uz.furor.template.db.beans.admin.RolePermissionBean"
-            resultType="uz.furor.template.db.beans.admin.RolePermissionBean"
-            affectData="true" flushCache="true">
-        insert into role_permissions (id,
-                                 shortname,
-                                 name,
-                                 enabled,
-                                 order_id,
-                                 description,
-                                 created_users_id,
-                                 created_date,
-                                 updated_users_id,
-                                 updated_date)
-        VALUES (nextval('role_permissions_seq'),
-                #{shortname},
-                #{name},
-                #{enabled}::bool,
-                #{order_id}::int4,
-                #{description},
-                #{created_users_id}::int4,
-                current_timestamp,
-                #{updated_users_id}::int4,
-                current_timestamp)
-        returning id, shortname, name,enabled,order_id, description, created_users_id, created_date
-    </select>
+<!--    <select id="insertRolePermission" parameterType="uz.furor.template.db.beans.admin.RolePermissionBean"-->
+<!--            resultType="uz.furor.template.db.beans.admin.RolePermissionBean"-->
+<!--            affectData="true" flushCache="true">-->
+<!--        insert into role_permissions (id,-->
+<!--                                 shortname,-->
+<!--                                 name,-->
+<!--                                 enabled,-->
+<!--                                 order_id,-->
+<!--                                 description,-->
+<!--                                 created_users_id,-->
+<!--                                 created_date,-->
+<!--                                 updated_users_id,-->
+<!--                                 updated_date)-->
+<!--        VALUES (nextval('role_permissions_seq'),-->
+<!--                #{shortname},-->
+<!--                #{name},-->
+<!--                #{enabled}::bool,-->
+<!--                #{order_id}::int4,-->
+<!--                #{description},-->
+<!--                #{created_users_id}::int4,-->
+<!--                current_timestamp,-->
+<!--                #{updated_users_id}::int4,-->
+<!--                current_timestamp)-->
+<!--        returning id, shortname, name,enabled,order_id, description, created_users_id, created_date-->
+<!--    </select>-->
 
 </mapper>

@@ -10,6 +10,4 @@ public interface RoleAccessMapper {
 
     List<RoleAccessBean> selectRoleAccesses(Map<String, Object> params, RowBounds rowBounds);
     List<RoleAccessBean> selectRoleAccesses(Map<String, Object> params);
-
-    RoleAccessBean
 }
