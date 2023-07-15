@@ -15,7 +15,6 @@
         </if>
     </select>
 
-
     <parameterMap id="insertUserMap" type="map">
         <parameter property="p_username" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="p_password" jdbcType="VARCHAR" mode="IN"/>
@@ -31,7 +30,7 @@
     </insert>
 
     <parameterMap id="updateUserMap" type="map">
-        <parameter property="pid" jdbcType="INTEGER" mode="OUT"/>
+        <parameter property="p_id" jdbcType="INTEGER" mode="OUT"/>
         <parameter property="p_username" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="p_password" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="p_password_expire_date" jdbcType="DATE" mode="IN"/>

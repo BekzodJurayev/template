@@ -22,8 +22,10 @@
 
     </select>
 
-    <insert id="insertRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"
-            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+
+    <select id="insertRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"
+            resultType="uz.furor.template.db.beans.admin.RoleBean"
+            affectData="true" flushCache="true">
         insert into roles (id,
                            name,
                            enabled,
@@ -44,7 +46,8 @@
                 #{updated_users_id}::int4,
                 current_timestamp,
                 #{is_default}::bool)
-    </insert>
+        returning *
+    </select>
 
     <update id="updateRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"
             statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
@@ -63,30 +66,5 @@
         delete from roles
         where id = #{id}::int4
     </delete>
-<!--    <select id="insertRole" parameterType="uz.furor.template.db.beans.admin.RoleBean"-->
-<!--            resultType="uz.furor.template.db.beans.admin.RoleBean"-->
-<!--            affectData="true" flushCache="true">-->
-<!--        insert into roles (id,-->
-<!--                           name,-->
-<!--                           enabled,-->
-<!--                           order_id,-->
-<!--                           description,-->
-<!--                           created_users_id,-->
-<!--                           created_date,-->
-<!--                           updated_users_id,-->
-<!--                           updated_date,-->
-<!--                           is_default)-->
-<!--        VALUES (nextval('roles_seq'),-->
-<!--                #{name},-->
-<!--                #{enabled}::bool,-->
-<!--                #{order_id}::int4,-->
-<!--                #{description},-->
-<!--                #{created_users_id}::int4,-->
-<!--                current_timestamp,-->
-<!--                #{updated_users_id}::int4,-->
-<!--                current_timestamp,-->
-<!--                #{is_default}::bool)-->
-<!--        returning id, name,enabled,order_id, description, created_users_id, created_date, updated_users_id, updated_date, is_default-->
-<!--    </select>-->
 
 </mapper>

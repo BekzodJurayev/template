@@ -11,9 +11,6 @@ import java.util.Map;
 public interface UserMapper {
     List<UserBean> selectUsers(Map<String, Object> params, RowBounds rowBounds);
     List<UserBean> selectUsers(Map<String, Object> params);
-
     void insertUser(Map<String, Object> params);
     void updateUser(Map<String, Object> params);
-
-
 }

@@ -18,4 +18,34 @@
         </if>
     </select>
 
+    <select id="insertRoleAccess" affectData="true" flushCache="true"
+            parameterType="uz.furor.template.db.beans.admin.RoleAccessBean"
+            resultType="uz.furor.template.db.beans.admin.RoleAccessBean">
+        insert into role_accesses (id,
+                                   roles_id,
+                                   accessed_roles_id,
+                                   created_users_id,
+                                   created_date)
+        VALUES (nextval('role_accesses_seq'),
+                #{roles_id}::int4,
+                #{accessed_roles_id}::int4,
+                #{created_users_id}::int4,
+                current_timestamp)
+        returning *
+    </select>
+
+    <update id="updateRoleAccess" parameterType="uz.furor.template.db.beans.admin.RoleAccessBean"
+            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        update role_accesses
+        set roles_id          = #{roles_id}::int4,
+            accessed_roles_id = #{accessed_roles_id}::int4
+        where id = #{id}::int4
+    </update>
+
+    <delete id="deleteRoleAccess" parameterType="map" statementType="PREPARED">
+        delete
+        from role_accesses
+        where id = #{id}::int4
+    </delete>
+
 </mapper>

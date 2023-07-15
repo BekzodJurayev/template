@@ -3,6 +3,7 @@ package uz.furor.template.db.beans.admin;
 import lombok.*;
 import uz.furor.template.db.beans.core.BaseNameBean;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -13,6 +14,6 @@ import java.util.Set;
 public class RoleBean extends BaseNameBean {
     private boolean is_default = false;
     private boolean enabled = false;
-    private Set<PermissionBean> permissions;
-    private Set<RoleBean> accessedRoles;
+    private List<PermissionBean> permissions;
+    private List<RoleBean> accessedRoles;
 }

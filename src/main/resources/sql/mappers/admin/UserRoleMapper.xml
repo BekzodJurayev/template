@@ -16,11 +16,11 @@
         <if test="users_id != null">
             and a.users_id = #{users_id}::int4
         </if>
-
     </select>
 
-    <insert id="insertUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
-            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+    <select id="insertUserRole" affectData="true" flushCache="true"
+            parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
+            resultType="uz.furor.template.db.beans.admin.UserRoleBean">
         insert into user_roles (id,
                                 users_id,
                                 roles_id,
@@ -29,7 +29,8 @@
                 #{users_id}::int4,
                 #{roles_id}::int4,
                 #{created_users_id}::int4)
-    </insert>
+        returning *
+    </select>
 
     <update id="updateUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
             statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
@@ -40,33 +41,9 @@
     </update>
 
     <delete id="deleteUserRole" parameterType="map" statementType="PREPARED">
-        delete from user_roles
+        delete
+        from user_roles
         where id = #{id}::int4
     </delete>
-    <!--    <select id="insertUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"-->
-    <!--            resultType="uz.furor.template.db.beans.admin.UserRoleBean"-->
-    <!--            affectData="true" flushCache="true">-->
-    <!--        insert into user_roles (id,-->
-    <!--                           name,-->
-    <!--                           enabled,-->
-    <!--                           order_id,-->
-    <!--                           description,-->
-    <!--                           created_users_id,-->
-    <!--                           created_date,-->
-    <!--                           updated_users_id,-->
-    <!--                           updated_date,-->
-    <!--                           is_default)-->
-    <!--        VALUES (nextval('user_roles_seq'),-->
-    <!--                #{name},-->
-    <!--                #{enabled}::bool,-->
-    <!--                #{order_id}::int4,-->
-    <!--                #{description},-->
-    <!--                #{created_users_id}::int4,-->
-    <!--                current_timestamp,-->
-    <!--                #{updated_users_id}::int4,-->
-    <!--                current_timestamp,-->
-    <!--                #{is_default}::bool)-->
-    <!--        returning id, name,enabled,order_id, description, created_users_id, created_date, updated_users_id, updated_date, is_default-->
-    <!--    </select>-->
 
 </mapper>

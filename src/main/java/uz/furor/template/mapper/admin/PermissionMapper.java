@@ -11,7 +11,6 @@ import java.util.Map;
 public interface PermissionMapper {
     List<PermissionBean> selectPermissions(Map<String, Object> params, RowBounds rowBounds);
     List<PermissionBean> selectPermissions(Map<String, Object> params);
-
     void insertPermission(PermissionBean permissionBean);
     void updatePermission(PermissionBean permissionBean);
     void deletePermission(Map<String, Object> params);

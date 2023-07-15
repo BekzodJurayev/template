@@ -11,6 +11,7 @@ import java.util.Map;
 public interface RoleMapper {
     List<RoleBean> selectRoles(Map<String, Object> params);
     List<RoleBean> selectRoles(Map<String, Object> params, RowBounds rowBounds);
-
     RoleBean insertRole(RoleBean roleBean);
+    RoleBean updateRole(RoleBean roleBean);
+    void deleteRole(Map<String, Object> params);
 }
