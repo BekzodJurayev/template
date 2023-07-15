@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="logPrefix" value="_MYBATIS_"/>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${spring.datasource.driverClassName}"/>
+                <property name="url" value="${spring.datasource.url}"/>
+                <property name="username" value="${spring.datasource.username}"/>
+                <property name="password" value="${spring.datasource.password}"/>
+                <property name="poolMaximumActiveConnections" value="25"/>
+                <property name="poolMaximumIdleConnections" value="5"/>
+                <property name="defaultAutoCommit" value="true"/>
+            </dataSource>
+        </environment>
+    </environments>
+</configuration>
