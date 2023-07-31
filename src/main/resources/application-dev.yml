@@ -9,9 +9,9 @@ mybatis:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/template
-    username: postgres
-    password: 2004
+    url: postgres://rkkzalcv:yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1@john.db.elephantsql.com/rkkzalcv
+    username: rkkzalcv
+    password: yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1
     driverClassName: org.postgresql.Driver
 
 jwt:
