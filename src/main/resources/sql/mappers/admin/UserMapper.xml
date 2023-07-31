@@ -29,7 +29,7 @@
 
     <select id="insertUser" parameterMap="insertUserMap" statementType="CALLABLE">
         CALL insert_user(?, ?, ?, ?, ?, ?, ?, ?, ?)
-        --         CALL insert_user(#{p_name, jdbcType=VARCHAR, mode=IN},
+--         CALL insert_user(#{p_name, jdbcType=VARCHAR, mode=IN},
 --                          #{p_username, jdbcType=VARCHAR, mode=IN},
 --                          #{p_password, jdbcType=VARCHAR, mode=IN},
 --                          #{p_password_expire_date, jdbcType=TIMESTAMP, mode=IN},
@@ -52,6 +52,6 @@
         <parameter property="p_log_msg" jdbcType="VARCHAR" mode="INOUT"/>
     </parameterMap>
     <update id="updateUser" parameterMap="updateUserMap" statementType="CALLABLE">
-        call update_user(?, ?, ?, ?, ?, ?, ?, ?, ?)
+        CALL update_user(?, ?, ?, ?, ?, ?, ?, ?, ?)
     </update>
 </mapper>
