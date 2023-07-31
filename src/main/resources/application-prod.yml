@@ -9,7 +9,7 @@ mybatis:
 
 spring:
   datasource:
-    url: postgres://rkkzalcv:yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1@john.db.elephantsql.com/rkkzalcv
+    url: jdbc:postgresql://john.db.elephantsql.com/rkkzalcv
     username: rkkzalcv
     password: yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1
     driverClassName: org.postgresql.Driver

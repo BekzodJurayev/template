@@ -15,6 +15,9 @@ import uz.furor.template.models.RegisterBean;
 import uz.furor.template.service.admin.AuthService;
 import uz.furor.template.service.admin.UserService;
 
+import java.util.Date;
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -46,10 +49,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterBean register) throws RestException {
+        if (Objects.isNull(register.getPassword()) || !Objects.equals(register.getPassword(), register.getConfirmPassword()))
+            throw RestException.restThrow("Passwords not matched or empty", HttpStatus.BAD_REQUEST);
         var user = UserBean.builder()
+                .name(register.getName())
                 .username(register.getUsername())
                 .password(passwordEncoder.encode(register.getPassword()))
-//                .password_expire_date(new Date(System.currentTimeMillis() + 1000L * 60 * 24 * default_password_expire_days))
+                .password_expire_date(new Date(System.currentTimeMillis() + 1000L * 60 * 24 * default_password_expire_days))
                 .enabled(true)
                 .roles(null)
                 .permissions(null)

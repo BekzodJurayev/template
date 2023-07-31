@@ -10,7 +10,6 @@ import uz.furor.template.mapper.admin.UserMapper;
 import uz.furor.template.service.admin.UserService;
 import uz.furor.template.utils.Utils;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,6 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserBean save(UserBean user) {
         Map<String, Object> params = Utils.generateMap(
+                "p_name", user.getName(),
                 "p_username", user.getUsername(),
                 "p_password", user.getPassword(),
                 "p_password_expire_date", user.getPassword_expire_date(),
