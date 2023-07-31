@@ -8,22 +8,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.furor.template.config.JwtService;
-import uz.furor.template.db.beans.admin.RoleBean;
 import uz.furor.template.db.beans.admin.UserBean;
 import uz.furor.template.exceptions.RestException;
+import uz.furor.template.models.LoginBean;
+import uz.furor.template.models.RegisterBean;
 import uz.furor.template.service.admin.AuthService;
-import uz.furor.template.service.admin.RoleService;
 import uz.furor.template.service.admin.UserService;
-
-import java.util.Date;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final RoleService roleService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
@@ -31,36 +27,34 @@ public class AuthServiceImpl implements AuthService {
     private int default_password_expire_days;
 
     @Override
-    public String register(UserBean userBean) throws RestException {
-        List<RoleBean> roles = roleService.findDefaultRoles();
+    public String login(LoginBean login) throws UsernameNotFoundException {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            login.getUsername(),
+                            login.getPassword()
+                    )
+            );
+        } catch (DisabledException | LockedException | CredentialsExpiredException e) {
+            throw RestException.restThrow("USER_NOT_FOUND_OR_DISABLED", HttpStatus.FORBIDDEN);
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            throw RestException.restThrow("LOGIN_OR_PASSWORD_ERROR", HttpStatus.UNAUTHORIZED);
+        }
+        var user = userService.findByUsername(login.getUsername());
+        return jwtService.generateToken(user);
+    }
 
+    @Override
+    public String register(RegisterBean register) throws RestException {
         var user = UserBean.builder()
-                .username(userBean.getUsername())
-                .password(passwordEncoder.encode(userBean.getPassword()))
-                .password_expire_date(new Date(System.currentTimeMillis() + 1000L * 60 * 24 * default_password_expire_days))
+                .username(register.getUsername())
+                .password(passwordEncoder.encode(register.getPassword()))
+//                .password_expire_date(new Date(System.currentTimeMillis() + 1000L * 60 * 24 * default_password_expire_days))
                 .enabled(true)
                 .roles(null)
                 .permissions(null)
                 .build();
         user = userService.save(user);
-        return jwtService.generateToken(user);
-    }
-
-    @Override
-    public String login(UserBean userBean) throws UsernameNotFoundException {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            userBean.getUsername(),
-                            userBean.getPassword()
-                    )
-            );
-        } catch (DisabledException | LockedException | CredentialsExpiredException disabledException) {
-            throw RestException.restThrow("USER_NOT_FOUND_OR_DISABLED", HttpStatus.FORBIDDEN);
-        } catch (BadCredentialsException | UsernameNotFoundException badCredentialsException) {
-            throw RestException.restThrow("LOGIN_OR_PASSWORD_ERROR", HttpStatus.UNAUTHORIZED);
-        }
-        var user = userService.findByUsername(userBean.getUsername());
         return jwtService.generateToken(user);
     }
 }

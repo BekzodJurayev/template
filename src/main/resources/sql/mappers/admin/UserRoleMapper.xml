@@ -32,14 +32,6 @@
         returning *
     </select>
 
-    <update id="updateUserRole" parameterType="uz.furor.template.db.beans.admin.UserRoleBean"
-            statementType="PREPARED" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        update user_roles
-        set users_id = #{users_id}::int4,
-            roles_id = #{roles_id}::int4
-        where id = #{id}::int4
-    </update>
-
     <delete id="deleteUserRole" parameterType="map" statementType="PREPARED">
         delete
         from user_roles

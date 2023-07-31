@@ -10,6 +10,7 @@ import uz.furor.template.mapper.admin.UserMapper;
 import uz.furor.template.service.admin.UserService;
 import uz.furor.template.utils.Utils;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -54,8 +55,6 @@ public class UserServiceImpl implements UserService {
                 "p_log_msg", null);
         userMapper.insertUser(params);
         params.put("id", params.get("p_new_id"));
-        UserBean userBean = userMapper.selectUsers(params).get(0);
-
-        return userBean;
+        return userMapper.selectUsers(params).get(0);
     }
 }

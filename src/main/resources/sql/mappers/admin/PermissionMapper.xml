@@ -6,6 +6,13 @@
 
     <select id="selectPermissions" resultType="uz.furor.template.db.beans.admin.PermissionBean" parameterType="map">
         select a.* from permissions a
+            <if test="users_id">
+                left join (
+                    select distinct permissions_id from role_permissions rp
+                                          left join user_roles ur on rp.roles_id = ur.roles_id
+                                          where ur.users_id
+                )
+            </if>
         <if test="roles_id != null">
             inner join role_permissions rp on a.id = rp.permissions_id and rp.roles_id = roles_id
         </if>

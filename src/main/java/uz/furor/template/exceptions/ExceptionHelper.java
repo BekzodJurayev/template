@@ -1,6 +1,8 @@
 package uz.furor.template.exceptions;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -31,10 +33,11 @@ import uz.furor.template.utils.ResponseBuilder;
 @RequiredArgsConstructor
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class ExceptionHelper {
+    private static final Logger _logger = LogManager.getLogger(ExceptionHelper.class);
 
     @ExceptionHandler(value = {RestException.class})
-    public ResponseEntity<?> handleException(RestException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException1(RestException ex) {
+        _logger.error(ex);
         return ResponseBuilder.get(ex.getMsg(), ex.getStatus());
     }
 
@@ -48,14 +51,14 @@ public class ExceptionHelper {
             EmptyResultDataAccessException.class,
             BindException.class
     })
-    public ResponseEntity<?> handleException(MethodArgumentNotValidException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException2(Exception ex) {
+        _logger.error(ex);
         return ResponseBuilder.get(HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {AccessDeniedException.class})
-    public ResponseEntity<?> handleException(AccessDeniedException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException3(Exception ex) {
+        _logger.error(ex);
         return ResponseBuilder.get("Access denied", HttpStatus.FORBIDDEN);
     }
 
@@ -63,8 +66,8 @@ public class ExceptionHelper {
             MissingPathVariableException.class,
             NoHandlerFoundException.class
     })
-    public ResponseEntity<?> handleException(NoHandlerFoundException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException4(Exception ex) {
+        _logger.error(ex);
         return ResponseBuilder.get(HttpStatus.NOT_FOUND);
     }
 
@@ -73,8 +76,8 @@ public class ExceptionHelper {
             HttpMediaTypeNotAcceptableException.class,
             HttpMediaTypeNotSupportedException.class
     })
-    public ResponseEntity<?> handleException(HttpRequestMethodNotSupportedException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException5(Exception ex) {
+        _logger.error(ex);
         return ResponseBuilder.get(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -83,14 +86,14 @@ public class ExceptionHelper {
             HttpMessageNotWritableException.class,
             Exception.class,
     })
-    public ResponseEntity<?> handleException(ConversionNotSupportedException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException6(Exception ex) {
+        _logger.fatal(ex);
         return ResponseBuilder.get(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = {AsyncRequestTimeoutException.class})
-    public ResponseEntity<?> handleException(AsyncRequestTimeoutException ex) {
-        ex.printStackTrace();
+    public ResponseEntity<?> handleException7(Exception ex) {
+        _logger.fatal(ex);
         return ResponseBuilder.get(HttpStatus.SERVICE_UNAVAILABLE);
     }
 }

@@ -15,25 +15,34 @@
         </if>
     </select>
 
-    <parameterMap id="insertUserMap" type="map">
-        <parameter property="p_username" jdbcType="VARCHAR" mode="IN"/>
-        <parameter property="p_password" jdbcType="VARCHAR" mode="IN"/>
-        <parameter property="p_password_expire_date" jdbcType="DATE" mode="IN"/>
-        <parameter property="p_enabled" jdbcType="BOOLEAN" mode="IN"/>
-        <parameter property="p_result" jdbcType="INTEGER" mode="OUT"/>
-        <parameter property="p_new_id" jdbcType="INTEGER" mode="OUT"/>
-        <parameter property="p_res_msg" jdbcType="VARCHAR" mode="OUT"/>
-        <parameter property="p_log_msg" jdbcType="VARCHAR" mode="OUT"/>
-    </parameterMap>
-    <insert id="insertUser" parameterMap="insertUserMap" statementType="CALLABLE">
-        {call insertUser(?, ?, ?, ?, ?, ?, ?, ?)}
-    </insert>
+<!--    <parameterMap id="insertUserMap" type="map">-->
+<!--        <parameter property="p_username" jdbcType="VARCHAR" mode="IN"/>-->
+<!--        <parameter property="p_password" jdbcType="VARCHAR" mode="IN"/>-->
+<!--        <parameter property="p_password_expire_date" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>-->
+<!--        <parameter property="p_enabled" jdbcType="BOOLEAN" mode="IN"/>-->
+<!--        <parameter property="p_result" jdbcType="INTEGER" mode="OUT"/>-->
+<!--        <parameter property="p_new_id" jdbcType="INTEGER" mode="OUT"/>-->
+<!--        <parameter property="p_res_msg" jdbcType="VARCHAR" mode="OUT"/>-->
+<!--        <parameter property="p_log_msg" jdbcType="VARCHAR" mode="OUT"/>-->
+<!--    </parameterMap>-->
+
+    <select id="insertUser" resultSets="p_result,p_new_id,p_res_msg,p_log_msg" resultType="map" parameterType="map" statementType="CALLABLE">
+        {CALL insertUser(
+            #{p_username, jdbcType=VARCHAR, mode=IN}::varchar,
+            #{p_password, jdbcType=VARCHAR, mode=IN}::varchar,
+            #{p_password_expire_date, jdbcType=DATE, mode=IN}::timestamp,
+            #{p_enabled, jdbcType=BOOLEAN, mode=IN}::boolean,
+            null::integer,
+            null::integer,
+            null::varchar,
+            null::varchar)}
+    </select>
 
     <parameterMap id="updateUserMap" type="map">
         <parameter property="p_id" jdbcType="INTEGER" mode="OUT"/>
         <parameter property="p_username" jdbcType="VARCHAR" mode="IN"/>
         <parameter property="p_password" jdbcType="VARCHAR" mode="IN"/>
-        <parameter property="p_password_expire_date" jdbcType="DATE" mode="IN"/>
+        <parameter property="p_password_expire_date" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
         <parameter property="p_enabled" jdbcType="BOOLEAN" mode="IN"/>
         <parameter property="p_result" jdbcType="INTEGER" mode="OUT"/>
         <parameter property="p_res_msg" jdbcType="VARCHAR" mode="OUT"/>

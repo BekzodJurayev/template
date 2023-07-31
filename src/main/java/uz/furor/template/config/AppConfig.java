@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import uz.furor.template.service.admin.UserService;
 
-
 @MapperScan(basePackages = {
         "uz.furor.template.mapper.admin"
 }, annotationClass = Mapper.class)
@@ -46,5 +45,4 @@ public class AppConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

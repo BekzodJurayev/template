@@ -16,6 +16,7 @@ import java.util.*;
 @AllArgsConstructor
 @JsonTypeName(value = "user")
 public class UserBean extends BaseIdBean implements UserDetails {
+    private String name;
     private String username;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

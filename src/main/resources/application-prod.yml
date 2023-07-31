@@ -2,35 +2,21 @@ server:
   port: 8095
 
 mybatis:
-  type-aliases-package: com.lance.mybatis.domain
-  mapper-locations: {
-                      "classpath*:/sql/mappers/*/*Mapper.xml",
-                      "/sql/mappers/*Mapper.xml",
-  }
-  configuration:
-    map-underscore-to-camel-case: true
-    use-generated-keys: true
-    default-fetch-size: 100
-    default-statement-timeout: 30
-    log-prefix: "_MYBATIS_"
-    log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl
+  mapper-locations:
+    - "classpath*:/sql/mappers/*/*Mapper.xml"
+    - "classpath*:/sql/mappers/*Mapper.xml"
+  config-location: classpath:mybatis-config.xml
 
 spring:
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/template
-    username: postgres
-    password: 2004
+    url: postgres://rkkzalcv:yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1@john.db.elephantsql.com/rkkzalcv
+    username: rkkzalcv
+    password: yqHuj7YNdd9yNDE4wwhSItFNRdRaV9C1
     driverClassName: org.postgresql.Driver
-    hikari:
-      minimum-idle: 5
-      maximum-pool-size: 25
-      max-lifetime: 60000
-      auto-commit: true
-    dbcp2:
-      max-open-prepared-statements: 20
-      pool-prepared-statements: true
 
 jwt:
-  life_time: 86400
   secret_key: 5A7134743777397A24432646294A404635266556A5863272357538782F4125
+  life_time_in_hours: 24
+
+user:
+  default_password_expire_days: 90

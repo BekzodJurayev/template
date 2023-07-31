@@ -13,9 +13,7 @@ import uz.furor.template.mapper.admin.RoleMapper;
 import uz.furor.template.service.admin.RoleService;
 import uz.furor.template.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -57,37 +55,44 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleBean findWholeRoleById(Integer id) {
-        return findWholeById(id);
+        Set<Integer> ids = new HashSet<>();
+        ids.add(id);
+        return findWholeById(id, ids);
     }
 
     @Override
     public List<RoleBean> findAllUserRolesByUserId(Integer userId) {
         List<RoleBean> roles = roleMapper.selectRoles(Utils.generateMap("users_id", userId));
-        roles.forEach(this::collectAllRoleFields);
+        Set<Integer> ids = new HashSet<>();
+        roles.forEach(role -> ids.add(role.getId()));
+        roles.forEach(roleBean -> collectAllRoleFields(roleBean, ids));
         return roles;
     }
 
     @Override
     public List<RoleBean> findDefaultRoles() {
         List<RoleBean> roles = roleMapper.selectRoles(Utils.generateMap("is_default", true));
-        roles.forEach(this::collectAllRoleFields);
+        Set<Integer> ids = new HashSet<>();
+        roles.forEach(role -> ids.add(role.getId()));
+        roles.forEach(roleBean -> collectAllRoleFields(roleBean, ids));
         return roles;
     }
 
-    private RoleBean findWholeById(Integer id) {
+    private RoleBean findWholeById(Integer id, Set<Integer> ids) {
         RoleBean roleBean = findRoleById(id);
-        collectAllRoleFields(roleBean);
+        collectAllRoleFields(roleBean, ids);
         return roleBean;
     }
 
-    private void collectAllRoleFields(RoleBean roleBean) {
+    private void collectAllRoleFields(RoleBean roleBean, Set<Integer> ids) {
         Map<String, Object> params = Utils.generateMap("roles_id", roleBean.getId());
         List<PermissionBean> permissions = permissionMapper.selectPermissions(params);
         roleBean.setPermissions(permissions);
         List<RoleAccessBean> roleAccesses = roleAccessMapper.selectRoleAccesses(params);
+        roleAccesses.removeIf(role_access -> ids.contains(role_access.getAccessed_roles_id()));
         List<RoleBean> accessedRoles = new ArrayList<>(roleAccesses.size());
         for (RoleAccessBean accessedRole : roleAccesses)
-            accessedRoles.add(findWholeById(accessedRole.getRoles_id()));
+            accessedRoles.add(findWholeById(accessedRole.getRoles_id(), ids));
         roleBean.setAccessedRoles(accessedRoles);
     }
 

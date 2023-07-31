@@ -10,7 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import uz.furor.template.constants.urls.UrlAdmin;
+
+import static uz.furor.template.constants.urls.UrlAdmin.openPaths;
 
 @Configuration
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class SecurityConfig {
                 .cors()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers(UrlAdmin.AUTH + "/**")
+                .requestMatchers(openPaths.toArray(new String[0]))
                 .permitAll()
                 .anyRequest()
                 .authenticated()
