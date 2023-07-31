@@ -1,7 +1,6 @@
 package uz.furor.template.mapper.admin;
 
 import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.mapping.StatementType;
 import org.apache.ibatis.session.RowBounds;
 import uz.furor.template.db.beans.admin.UserBean;
 

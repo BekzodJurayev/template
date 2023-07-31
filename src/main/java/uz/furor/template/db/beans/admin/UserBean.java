@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.furor.template.db.beans.core.BaseIdBean;
 
@@ -28,7 +29,9 @@ public class UserBean extends BaseIdBean implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions.values();
+        if (Objects.nonNull(permissions))
+            return permissions.values();
+        return new ArrayList<>();
     }
 
     @Override
